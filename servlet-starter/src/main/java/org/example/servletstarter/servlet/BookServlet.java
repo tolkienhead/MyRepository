@@ -5,31 +5,32 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.servletstarter.service.AuthorService;
+import org.example.servletstarter.service.BookService;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
-@WebServlet("/author")
-public class AuthorServlet extends HttpServlet {
-    private final AuthorService authorService = AuthorService.getInstance();
+@WebServlet("/book")
+public class BookServlet extends HttpServlet {
+    BookService bookService = BookService.getINSTANCE();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        Integer author_id =  Integer.valueOf(req.getParameter("author_id"));
 
-        try (var printWriter = resp.getWriter()) {
+
+        try(PrintWriter printWriter = resp.getWriter()){
             printWriter.write("<ul>");
-            authorService.findAll().forEach(authorDto -> {
-                printWriter.write(
-                        """
-                                <li>
-                                    <a href = "/servlet/book?author_id=%d">%s</a>
-                                </li>
-                                """.formatted(authorDto.getId(), authorDto.getDescription())
-                );
-            });
+            bookService.findAllByAuthorId(author_id).forEach(bookDto -> printWriter.write(
+                    """  
+                            <li>
+                                %s %s
+                            </li>
+                            """.formatted(bookDto.getId(), bookDto.getDescription())
+            ));
             printWriter.write("</ul>");
         }
     }

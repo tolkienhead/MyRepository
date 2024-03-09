@@ -20,7 +20,7 @@ public class AuthorService {
                 .map(author -> new AuthorDto(
                         author.getId(),
                         """
-                                %s %s
+                                %s - %s
                                 """.formatted(author.getFullName(),author.getRating())
                         )
                 )

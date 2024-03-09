@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="driver" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="PostgresDriver"/>
+    </bean>
+
+    <bean id="pool1" name="p1, p2, p3" class="org.example.database.pool.ConnectionPool" init-method="init" destroy-method="destroy">
+        <constructor-arg name="name" ref="driver"/>
+        <constructor-arg name="size" value="10"/>
+        <constructor-arg>
+            <list>
+                <value>arg1=value1</value>
+                <value>arg2=value2</value>
+                <ref bean="driver"/>
+            </list>
+        </constructor-arg>
+        <constructor-arg>
+            <map>
+                <entry key="url" value="postgresurl"/>
+                <entry key="password" value="123"/>
+                <entry key="driver" value-ref="driver"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="companyRepository" class="org.example.database.repository.CompanyRepository" factory-method="of">
+        <constructor-arg ref="p1"/>
+    </bean>
+
+
+    <bean id="beef" class="sandwich.products.Beef">
+        <constructor-arg value="3" />
+    </bean>
+    <bean id="pork" class="sandwich.products.Pork">
+        <constructor-arg value="30" />
+    </bean>
+    <bean id="tomato" class="sandwich.products.Tomato">
+        <constructor-arg value="Cherry" />
+    </bean>
+    <bean id="milk" class="sandwich.products.Milk">
+        <constructor-arg value="15" />
+    </bean>
+
+    <bean id="salami" class="sandwich.components.Salami" >
+        <constructor-arg ref="beef" />
+    </bean>
+    <bean id="ham" class="sandwich.components.Ham" >
+        <constructor-arg ref="pork" />
+    </bean>
+    <bean id="sous" class="sandwich.components.Sous" >
+        <constructor-arg ref="tomato" />
+    </bean>
+    <bean id="cheese" class="sandwich.components.Cheese" >
+        <constructor-arg ref="milk" />
+    </bean>
+
+    <bean id="bmt" class="sandwich.typesOfSandwiches.BMT" scope="prototype">
+        <constructor-arg name="salami" ref="salami" />
+        <constructor-arg name="cheese" ref="cheese" />
+        <constructor-arg name="ham" ref="ham" />
+        <constructor-arg name="sous" ref="sous" />
+    </bean>
+
+</beans>
+

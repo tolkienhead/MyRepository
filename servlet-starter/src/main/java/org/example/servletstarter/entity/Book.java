@@ -6,11 +6,13 @@ public class Book {
     Integer id;
     String title;
     String isbn;
+    Integer publisher_id;
 
-    public Book(Integer id, String title, String isbn) {
+    public Book(Integer id, String title, String isbn, Integer publisher_id) {
         this.id = id;
         this.title = title;
         this.isbn = isbn;
+        this.publisher_id = publisher_id;
     }
 
     public Integer getId() {
@@ -37,12 +39,21 @@ public class Book {
         this.isbn = isbn;
     }
 
+    public Integer getPublisher_id() {
+        return publisher_id;
+    }
+
+    public void setPublisher_id(Integer publisher_id) {
+        this.publisher_id = publisher_id;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", isbn='" + isbn + '\'' +
+                ", publisher_id=" + publisher_id +
                 '}';
     }
 
@@ -51,11 +62,11 @@ public class Book {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return Objects.equals(id, book.id);
+        return Objects.equals(id, book.id) && Objects.equals(title, book.title) && Objects.equals(isbn, book.isbn) && Objects.equals(publisher_id, book.publisher_id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, title, isbn, publisher_id);
     }
 }
